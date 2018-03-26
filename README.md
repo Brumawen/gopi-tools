@@ -11,14 +11,14 @@ Access to the Raspberry Pi's GPIO pins is provided by the awesome [go-rpio](http
 ## Installation and Usage ##
 
 To install run the following on the command prompt:
-'''Shell
+```Shell
 go get "github.com\brumawen\gopi-tools" 
-'''
+```
 
 Add the following import to the top of your code:
-'''go
+```go
 import "github.com/brumawen/gopi-tools"
-'''
+```
 
 ## Tool Module Descriptions ##
 
@@ -26,7 +26,7 @@ import "github.com/brumawen/gopi-tools"
 
 This type provides control over a LED that has been [connected](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins) to the GPIO pins of your Pi.
 
-'''go
+```go
 func TestLed(t *testing.T) {
 	l := Led{GpioLed: 18}
 	err := l.Init()
@@ -39,13 +39,13 @@ func TestLed(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	l.Off()
 }
-'''
+```
 
 ### CharDisplay ###
 
 This type provides control for a [LCD Display.](https://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/overview)
 
-'''go
+```go
 func TestDisplayMessage(t *testing.T) {
 	d := CharDisplay{
 		GpioRS: 21,
@@ -66,4 +66,4 @@ func TestDisplayMessage(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	d.Clear()
 }
-'''
+```
