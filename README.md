@@ -67,3 +67,46 @@ func TestDisplayMessage(t *testing.T) {
 	d.Clear()
 }
 ```
+
+### OneWireTemp ###
+
+This type provides control for a 1-Wire Temperature device like a DS18B20 temperature probe.
+
+```go
+func TestCanReadTemp(t *testing.T) {
+	o := OneWireTemp{ID: "28-0516a4c75bff"}
+	err := o.Init()
+	if err != nil {
+		t.Error(err)
+	}
+	defer o.Close()
+	v, err := o.ReadTemp()
+	if err != nil {
+		t.Error(err)
+	}
+	if v == 999999 {
+		t.Error("Temperature could not be read from the file.")
+	} else {
+		fmt.Println("Temperature", v)
+	}
+}
+```
+
+### Mcp3008 ###
+
+This type provides control for a 8-Channel ADC IC.
+
+A call to the Read method returns a float slice containing the 8 channel values read from the IC.
+
+```go
+func TestMcp3008CanReadChannels(t *testing.T) {
+	m := Mcp3008{}
+	if err := m.Init(); err != nil {
+		t.Error(err)
+	}
+	defer m.Close()
+
+	r := m.Read()
+	fmt.Println(r)
+}
+```

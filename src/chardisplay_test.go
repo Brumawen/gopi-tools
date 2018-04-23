@@ -3,7 +3,7 @@ package gopitools
 import "testing"
 import "time"
 
-func TestCanInitialize(t *testing.T) {
+func TestCharDisplayCanInitialize(t *testing.T) {
 	d := CharDisplay{}
 	err := d.Init()
 	if err != nil {
@@ -12,7 +12,7 @@ func TestCanInitialize(t *testing.T) {
 	defer d.Close()
 }
 
-func TestCanDisplayMessage(t *testing.T) {
+func TestCharDisplayCanDisplayMessage(t *testing.T) {
 	d := CharDisplay{}
 	err := d.Message("Hello\nWorld")
 	if err != nil {
@@ -23,7 +23,7 @@ func TestCanDisplayMessage(t *testing.T) {
 	d.Clear()
 }
 
-func TestCanDisplayLongMessage(t *testing.T) {
+func TestCharDisplayCanDisplayLongMessage(t *testing.T) {
 	d := CharDisplay{}
 	err := d.Message("This is a really long message.")
 	if err != nil {
@@ -34,7 +34,7 @@ func TestCanDisplayLongMessage(t *testing.T) {
 	d.Clear()
 }
 
-func TestCanDisplayRightToLeft(t *testing.T) {
+func TestCharDisplayCanDisplayRightToLeft(t *testing.T) {
 	d := CharDisplay{}
 	err := d.SetRightToLeft()
 	if err != nil {
@@ -46,7 +46,7 @@ func TestCanDisplayRightToLeft(t *testing.T) {
 	d.Clear()
 }
 
-func TestCanAutoScroll(t *testing.T) {
+func TestCharDisplayCanAutoScroll(t *testing.T) {
 	d := CharDisplay{}
 	err := d.AutoScroll(true)
 	if err != nil {
@@ -58,7 +58,7 @@ func TestCanAutoScroll(t *testing.T) {
 	d.Clear()
 }
 
-func TestCanShowCursor(t *testing.T) {
+func TestCharDisplayCanShowCursor(t *testing.T) {
 	d := CharDisplay{}
 	err := d.ShowCursor(true)
 	if err != nil {
