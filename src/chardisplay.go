@@ -1,7 +1,10 @@
 package gopitools
 
-import rpio "github.com/stianeikeland/go-rpio"
-import "time"
+import (
+	"time"
+
+	rpio "github.com/stianeikeland/go-rpio"
+)
 
 // Command Flags
 const lcdClearDisplay int = 0x01

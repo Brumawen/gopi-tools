@@ -97,7 +97,7 @@ func (t *OneWireTemp) ReadTempInFahrenheit() (float64, error) {
 	return v, err
 }
 
-// Init initializes the LED ready for use.
+// Init initializes the device ready for use.
 func (t *OneWireTemp) Init() error {
 	// Check to see if this device is installed and working
 	f, err := t.getFilePath()

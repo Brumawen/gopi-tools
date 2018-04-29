@@ -1,11 +1,22 @@
 package gopitools
 
-import "testing"
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"testing"
+)
 
 func TestCanReadTemp(t *testing.T) {
-	o := OneWireTemp{ID: "28-0516a4c75bff"}
-	err := o.Init()
+	st, err := GetDeviceList()
+	if err != nil {
+		t.Error(err)
+	}
+	if len(st) == 0 {
+		t.Error(errors.New("Temperature device not found."))
+	}
+
+	o := OneWireTemp{ID: st[0].ID}
+	err = o.Init()
 	if err != nil {
 		t.Error(err)
 	}
@@ -22,7 +33,15 @@ func TestCanReadTemp(t *testing.T) {
 }
 
 func TestCanReadTempInFahrenheit(t *testing.T) {
-	o := OneWireTemp{ID: "28-0516a4c75bff"}
+	st, err := GetDeviceList()
+	if err != nil {
+		t.Error(err)
+	}
+	if len(st) == 0 {
+		t.Error(errors.New("Temperature device not found."))
+	}
+
+	o := OneWireTemp{ID: st[0].ID}
 	err := o.Init()
 	if err != nil {
 		t.Error(err)

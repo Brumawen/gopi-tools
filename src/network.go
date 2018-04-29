@@ -1,6 +1,8 @@
 package gopitools
 
-import "net"
+import (
+	"net"
+)
 
 // GetLocalIPAddresses gets a list of valid IPv4 addresses for the local machine
 func GetLocalIPAddresses() ([]string, error) {

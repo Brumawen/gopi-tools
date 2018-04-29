@@ -1,7 +1,9 @@
 package gopitools
 
-import "testing"
-import "time"
+import (
+	"testing"
+	"time"
+)
 
 func TestCharDisplayCanInitialize(t *testing.T) {
 	d := CharDisplay{}
