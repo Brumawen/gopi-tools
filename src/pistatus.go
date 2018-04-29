@@ -11,14 +11,20 @@ import (
 
 // PiStatus holds current information about the Device
 type PiStatus struct {
-	HostName     string
-	IpAddress    []string
-	CpuTemp      float64
-	GpuTemp      float64
-	FreeDisk     int
-	FreeDiskPerc int
-	AvailMem     int
-	Uptime       int
+	HostName     string   // Current Host Name
+	IpAddress    []string // Current IP Address
+	OSName       string   // Operating System Name
+	OSVersion    string   // Operating System version
+	HWType       string   // Hardware type
+	HWSerialNo   string   // Hardware SerialNo
+	MachineID    string   // Machine ID
+	CpuTemp      float64  // CPU temperature in Celcius
+	GpuTemp      float64  // GPU temperature in Celcius
+	FreeDisk     int      // Free Disk Space in bytes
+	FreeDiskPerc int      // Free Disk Space in percentage
+	AvailMem     int      // Available Memory in bytes
+	Uptime       int      // CPU uptime in seconds
+
 }
 
 // Read loads the status values into the struct
@@ -35,6 +41,45 @@ func (s *PiStatus) Read() {
 		log.Println("Could not get IP addresses.", err)
 	} else {
 		s.IpAddress = ip
+	}
+
+	//get operating system info
+	re := regexp.MustCompile("PRETTY_NAME=\"([\\w\\d\\s/()]+)\"")
+	if txt, err := ReadAllText("/etc/os-release"); err != nil {
+		log.Println("Could not get OS Information")
+	} else {
+		m := re.FindStringSubmatch(txt)
+		if len(m) >= 2 {
+			s.OSName = m[1]
+		}
+	}
+	if txt, err := ReadAllText("/etc/debian_version"); err != nil {
+		log.Println("Could not get OS Version")
+	} else {
+		s.OSVersion = strings.TrimSpace(txt)
+	}
+
+	//get hardware type
+	re = regexp.MustCompile("Revision\\s:\\s([a-e\\d]+)")
+	re1 := regexp.MustCompile("Serial\\s\\s:\\s([a-f\\d]*)")
+	if txt, err := ReadAllText("/proc/cpuinfo"); err != nil {
+		log.Println("Could not get Hardware Type")
+	} else {
+		m := re.FindStringSubmatch(txt)
+		if len(m) >= 2 {
+			s.HWType = getHardwareType(m[1])
+		}
+		m = re1.FindStringSubmatch(txt)
+		if len(m) >= 2 {
+			s.HWSerialNo = m[1]
+		}
+	}
+
+	//get machine id
+	if txt, err := ReadAllText("/etc/machine-id"); err != nil {
+		log.Println("Could not get Machine ID")
+	} else {
+		s.MachineID = txt
 	}
 
 	//get cpu temperature
@@ -62,7 +107,7 @@ func (s *PiStatus) Read() {
 	}
 
 	//get disk space
-	re := regexp.MustCompile("/dev/root\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)%")
+	re = regexp.MustCompile("/dev/root\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)%")
 	if out, err := exec.Command("df").Output(); err != nil {
 		log.Println("Could not get Disk Space.", err)
 	} else {
@@ -109,5 +154,32 @@ func (s *PiStatus) Read() {
 				s.Uptime = v
 			}
 		}
+	}
+}
+
+func getHardwareType(code string) string {
+	switch code {
+	case "0002", "0003":
+		return "Raspberry Pi B rev 1.0"
+	case "0004", "0005", "0006", "000d", "000e", "000f":
+		return "Raspberry Pi B rev 2.0"
+	case "0007", "0008", "0009":
+		return "Raspberry Pi A"
+	case "0010":
+		return "Raspberry Pi B+"
+	case "0011":
+		return "Raspberry Pi Compute Module"
+	case "0012":
+		return "Raspberry Pi A+"
+	case "a01041", "a21041":
+		return "Raspberry Pi 2B"
+	case "900092", "900093":
+		return "Raspberry Pi Zero"
+	case "a02082", "a22082":
+		return "Raspberry Pi 3B"
+	case "9000c1":
+		return "Raspberry Pi Zero W"
+	default:
+		return "Unknown Model"
 	}
 }
