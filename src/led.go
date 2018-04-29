@@ -1,6 +1,9 @@
 package gopitools
 
 import (
+	"errors"
+	"time"
+
 	"github.com/stianeikeland/go-rpio"
 )
 
@@ -11,6 +14,7 @@ type Led struct {
 	// Private values
 	isInitialized bool
 	pinLed        rpio.Pin
+	flashInterval int
 }
 
 // Close releases and unmaps GPIO memory.
@@ -48,8 +52,54 @@ func (l *Led) On() error {
 			return err
 		}
 	}
+	l.flashInterval = 0
 	l.pinLed.High()
 	return nil
+}
+
+// Flash turns on the LED for the specified interval (in ms), then turns it off for the same amount of time.
+// This is repeated until the Off function is called.
+func (l *Led) Flash(interval int) error {
+	if interval <= 0 {
+		return errors.New("Interval must be greater than 0.")
+	}
+	if !l.isInitialized {
+		err := l.Init()
+		if err != nil {
+			return err
+		}
+	}
+	if l.flashInterval > 0 {
+		// Flash already enabled
+		if l.flashInterval != interval {
+			l.flashInterval = interval
+		}
+	} else {
+		l.flashInterval = interval
+		go l.doFlash()
+	}
+	return nil
+}
+
+func (l *Led) doFlash() {
+	for {
+		if l.flashInterval == 0 {
+			break
+		}
+		l.pinLed.High()
+		if l.flashInterval == 0 {
+			break
+		}
+		time.Sleep(time.Duration(l.flashInterval) * time.Millisecond)
+		if l.flashInterval == 0 {
+			break
+		}
+		l.pinLed.Low()
+		if l.flashInterval == 0 {
+			break
+		}
+		time.Sleep(time.Duration(l.flashInterval) * time.Millisecond)
+	}
 }
 
 // Off turns the LED off
@@ -60,6 +110,7 @@ func (l *Led) Off() error {
 			return err
 		}
 	}
+	l.flashInterval = 0
 	l.pinLed.Low()
 	return nil
 }
