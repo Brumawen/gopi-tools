@@ -42,7 +42,7 @@ func TestCanReadTempInFahrenheit(t *testing.T) {
 	}
 
 	o := OneWireTemp{ID: st[0].ID}
-	err := o.Init()
+	err = o.Init()
 	if err != nil {
 		t.Error(err)
 	}

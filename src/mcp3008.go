@@ -1,9 +1,10 @@
 package gopitools
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
+	"strings"
 )
 
 // Mcp3008 provides an interface to a MCP3008 chip, an 8 channel 10-bit ADC chip.
@@ -31,7 +32,17 @@ func (m *Mcp3008) Read() ([]float64, error) {
 	if out, err := exec.Command("python", "mcp3008.py").Output(); err != nil {
 		return nil, err
 	} else {
-		fmt.Println(string(out))
+		l := []float64{}
+		if len(out) > 0 {
+			for _, v := range strings.Split(string(out), "\t") {
+				if f, err := strconv.ParseFloat(v, 64); err != nil {
+					l = append(l, 0)
+				} else {
+					l = append(l, f)
+				}
+			}
+		}
+
+		return l, nil
 	}
-	return nil, nil
 }
