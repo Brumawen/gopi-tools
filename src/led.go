@@ -10,7 +10,8 @@ import (
 // Led allows you to control a GPIO connected LED
 type Led struct {
 	// Public values
-	GpioLed int
+	GpioLed        int
+	TurnOffOnClose bool
 	// Private values
 	isInitialized bool
 	pinLed        rpio.Pin
@@ -20,6 +21,9 @@ type Led struct {
 // Close releases and unmaps GPIO memory.
 func (l *Led) Close() {
 	if l.isInitialized {
+		if l.TurnOffOnClose {
+			l.Off()
+		}
 		rpio.Close()
 		l.isInitialized = false
 	}
@@ -41,6 +45,7 @@ func (l *Led) Init() error {
 	}
 	l.pinLed = rpio.Pin(l.GpioLed)
 	l.pinLed.Output()
+	l.isInitialized = true
 	return nil
 }
 

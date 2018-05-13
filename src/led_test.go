@@ -18,6 +18,13 @@ func TestLed(t *testing.T) {
 	l.Off()
 }
 
+func TestTurnOffOnClose(t *testing.T) {
+	l := Led{GpioLed: 18, TurnOffOnClose: true}
+	defer l.Close()
+	l.On()
+	time.Sleep(1 * time.Second)
+}
+
 func TestFlashLed(t *testing.T) {
 	l := Led{GpioLed: 18}
 	if err := l.Init(); err != nil {
