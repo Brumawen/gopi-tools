@@ -18,7 +18,7 @@ func TestLed(t *testing.T) {
 	l.Off()
 }
 
-func TestTurnOffOnClose(t *testing.T) {
+func TestTurnLedOffOnClose(t *testing.T) {
 	l := Led{GpioLed: 18, TurnOffOnClose: true}
 	defer l.Close()
 	l.On()

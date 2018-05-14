@@ -7,7 +7,8 @@ import (
 // Pin allows you to control a GPIO Pin
 type Pin struct {
 	// Public values
-	GpioNo int
+	GpioNo         int
+	TurnOffOnClose bool
 	// Private values
 	isInitialized bool
 	pin           rpio.Pin
@@ -16,6 +17,9 @@ type Pin struct {
 // Close releases and unmaps GPIO memory.
 func (l *Pin) Close() {
 	if l.isInitialized {
+		if l.TurnOffOnClose {
+			l.Off()
+		}
 		rpio.Close()
 		l.isInitialized = false
 	}
@@ -37,6 +41,7 @@ func (l *Pin) Init() error {
 	}
 	l.pin = rpio.Pin(l.GpioNo)
 	l.pin.Output()
+	l.isInitialized = true
 	return nil
 }
 

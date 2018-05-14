@@ -106,6 +106,7 @@ func (t *OneWireTemp) Init() error {
 		t.isInitialized = true
 	}
 	t.re = regexp.MustCompile("t=(\\d{1,})")
+	t.isInitialized = true
 	return err
 }
 

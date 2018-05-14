@@ -6,7 +6,7 @@ import (
 )
 
 func TestPin(t *testing.T) {
-	l := Led{GpioLed: 18}
+	l := Pin{GpioNo: 18}
 	if err := l.Init(); err != nil {
 		t.Error(err)
 	}
@@ -18,7 +18,7 @@ func TestPin(t *testing.T) {
 }
 
 func TestTurnOnPin(t *testing.T) {
-	l := Led{GpioLed: 22}
+	l := Pin{GpioNo: 22}
 	if err := l.Init(); err != nil {
 		t.Error(err)
 	}
@@ -28,11 +28,18 @@ func TestTurnOnPin(t *testing.T) {
 }
 
 func TestTurnOffPin(t *testing.T) {
-	l := Led{GpioLed: 22}
+	l := Pin{GpioNo: 22}
 	if err := l.Init(); err != nil {
 		t.Error(err)
 	}
 	defer l.Close()
 
 	l.Off()
+}
+
+func TestTurnPinOffOnClose(t *testing.T) {
+	l := Pin{GpioNo: 18, TurnOffOnClose: true}
+	defer l.Close()
+	l.On()
+	time.Sleep(1 * time.Second)
 }
