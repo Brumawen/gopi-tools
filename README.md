@@ -26,7 +26,7 @@ import "github.com/brumawen/gopi-tools"
 
 This type provides control over a LED that has been [connected](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins) to a GPIO pin of your Pi.
 
-![alt text](https://github.com/brumawen/gopi-tools/docs/led.png "LED schematic")
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/led.png?raw=true "LED schematic")
 
 ```go
 func TestLed(t *testing.T) {
@@ -47,7 +47,7 @@ func TestLed(t *testing.T) {
 
 This type provides control for a [LCD Display.](https://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/overview)
 
-![alt text](https://github.com/brumawen/gopi-tools/docs/chardisplay.png "CharDisplay schematic")
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/chardisplay.png?raw=true "CharDisplay schematic")
 
 ```go
 func TestDisplayMessage(t *testing.T) {
@@ -76,7 +76,7 @@ func TestDisplayMessage(t *testing.T) {
 
 This type provides control for a 1-Wire Temperature device like a DS18B20 temperature probe.
 
-![alt text](https://github.com/brumawen/gopi-tools/docs/onewire.png "OneWire schematic")
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/onewire.png?raw=true "OneWire schematic")
 
 ```go
 func TestCanReadTemp(t *testing.T) {
@@ -102,7 +102,7 @@ func TestCanReadTemp(t *testing.T) {
 
 This type provides control for a 8-Channel ADC IC.
 
-![alt text](https://github.com/brumawen/gopi-tools/docs/mcp3008.png "MCP3008 schematic")
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/mcp3008.png?raw=true "MCP3008 schematic")
 
 A call to the Read method returns a float slice containing the 8 channel values read from the IC.
 
