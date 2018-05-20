@@ -29,20 +29,21 @@ func (m *Mcp3008) Read() ([]float64, error) {
 	if err := m.Init(); err != nil {
 		return nil, err
 	}
-	if out, err := exec.Command("python", "mcp3008.py").Output(); err != nil {
+	out, err := exec.Command("python", "mcp3008.py").Output()
+	if err != nil {
 		return nil, err
-	} else {
-		l := []float64{}
-		if len(out) > 0 {
-			for _, v := range strings.Split(string(out), "\t") {
-				if f, err := strconv.ParseFloat(v, 64); err != nil {
-					l = append(l, 0)
-				} else {
-					l = append(l, f)
-				}
+	}
+	l := []float64{}
+	if len(out) > 0 {
+		for _, v := range strings.Split(string(out), "\t") {
+			if f, err := strconv.ParseFloat(v, 64); err != nil {
+				l = append(l, 0)
+			} else {
+				l = append(l, f)
 			}
 		}
-
-		return l, nil
 	}
+
+	return l, nil
+
 }

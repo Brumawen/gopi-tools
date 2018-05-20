@@ -66,7 +66,7 @@ func (l *Led) On() error {
 // This is repeated until the Off function is called.
 func (l *Led) Flash(interval int) error {
 	if interval <= 0 {
-		return errors.New("Interval must be greater than 0.")
+		return errors.New("Interval must be greater than 0")
 	}
 	if !l.isInitialized {
 		err := l.Init()

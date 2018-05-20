@@ -12,7 +12,7 @@ func TestCanReadTemp(t *testing.T) {
 		t.Error(err)
 	}
 	if len(st) == 0 {
-		t.Error(errors.New("Temperature device not found."))
+		t.Error(errors.New("Temperature device not found"))
 	}
 
 	o := OneWireTemp{ID: st[0].ID}
@@ -26,7 +26,7 @@ func TestCanReadTemp(t *testing.T) {
 		t.Error(err)
 	}
 	if v == 999999 {
-		t.Error("Temperature could not be read from the file.")
+		t.Error("Temperature could not be read from the file")
 	} else {
 		fmt.Println("Temperature", v)
 	}
@@ -38,7 +38,7 @@ func TestCanReadTempInFahrenheit(t *testing.T) {
 		t.Error(err)
 	}
 	if len(st) == 0 {
-		t.Error(errors.New("Temperature device not found."))
+		t.Error(errors.New("Temperature device not found"))
 	}
 
 	o := OneWireTemp{ID: st[0].ID}
@@ -52,7 +52,7 @@ func TestCanReadTempInFahrenheit(t *testing.T) {
 		t.Error(err)
 	}
 	if v == 999999 {
-		t.Error("Temperature could not be read from the file.")
+		t.Error("Temperature could not be read from the file")
 	} else {
 		fmt.Println("Temperature", v)
 	}

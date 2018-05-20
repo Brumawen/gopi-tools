@@ -4,18 +4,20 @@ A variety of GPIO utilities for your Raspberry Pi.
 
 **Documentation:** [![GoDoc](https://godoc.org/github.com/brumawen/gopi-tools?status.svg)](https://godoc.org/github.com/brumawen/gopi-tools)
 
-gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.  
+gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.
 
 Access to the Raspberry Pi's GPIO pins is provided by the awesome [go-rpio](https://github.com/stianeikeland/go-rpio) toolkit.
 
 ## Installation and Usage ##
 
 To install run the following on the command prompt:
+
 ```Shell
-go get "github.com\brumawen\gopi-tools" 
+go get "github.com\brumawen\gopi-tools"
 ```
 
 Add the following import to the top of your code:
+
 ```go
 import "github.com/brumawen/gopi-tools"
 ```
@@ -30,16 +32,16 @@ This type provides control over a LED that has been [connected](https://thepihut
 
 ```go
 func TestLed(t *testing.T) {
-	l := Led{GpioLed: 18}
-	err := l.Init()
-	if err != nil {
-		t.Error(err)
-	}
-	defer l.Close()
+    l := Led{GpioLed: 18}
+    err := l.Init()
+    if err != nil {
+        t.Error(err)
+    }
+    defer l.Close()
 
-	l.On()
-	time.Sleep(2 * time.Second)
-	l.Off()
+    l.On()
+    time.Sleep(2 * time.Second)
+    l.Off()
 }
 ```
 
@@ -51,24 +53,24 @@ This type provides control for a [LCD Display.](https://learn.adafruit.com/drive
 
 ```go
 func TestDisplayMessage(t *testing.T) {
-	d := CharDisplay{
-		GpioRS: 21,
-		GpioEN: 20,
-		GpioD4: 26,
-		GpioD5: 19,
-		GpioD6: 13,
-		GpioD7: 6,
-		Lines:  2,
-		Cols:   16,
-	}
-	err := d.Init()
-	if err != nil {
-		t.Error(err)
-	}
-	defer d.Close()
-	d.Message("Hello\nWorld")
-	time.Sleep(2 * time.Second)
-	d.Clear()
+    d := CharDisplay{
+        GpioRS: 21,
+        GpioEN: 20,
+        GpioD4: 26,
+        GpioD5: 19,
+        GpioD6: 13,
+        GpioD7: 6,
+        Lines:  2,
+        Cols:   16,
+    }
+    err := d.Init()
+    if err != nil {
+        t.Error(err)
+    }
+    defer d.Close()
+    d.Message("Hello\nWorld")
+    time.Sleep(2 * time.Second)
+    d.Clear()
 }
 ```
 
@@ -80,21 +82,21 @@ This type provides control for a 1-Wire Temperature device like a DS18B20 temper
 
 ```go
 func TestCanReadTemp(t *testing.T) {
-	o := OneWireTemp{ID: "28-0516a4c75bff"}
-	err := o.Init()
-	if err != nil {
-		t.Error(err)
-	}
-	defer o.Close()
-	v, err := o.ReadTemp()
-	if err != nil {
-		t.Error(err)
-	}
-	if v == 999999 {
-		t.Error("Temperature could not be read from the file.")
-	} else {
-		fmt.Println("Temperature", v)
-	}
+    o := OneWireTemp{ID: "28-0516a4c75bff"}
+    err := o.Init()
+    if err != nil {
+        t.Error(err)
+    }
+    defer o.Close()
+    v, err := o.ReadTemp()
+    if err != nil {
+        t.Error(err)
+    }
+    if v == 999999 {
+        t.Error("Temperature could not be read from the file.")
+    } else {
+        fmt.Println("Temperature", v)
+    }
 }
 ```
 
@@ -108,14 +110,14 @@ A call to the Read method returns a float slice containing the 8 channel values 
 
 ```go
 func TestMcp3008CanReadChannels(t *testing.T) {
-	m := Mcp3008{}
-	if err := m.Init(); err != nil {
-		t.Error(err)
-	}
-	defer m.Close()
+    m := Mcp3008{}
+    if err := m.Init(); err != nil {
+        t.Error(err)
+    }
+    defer m.Close()
 
-	r := m.Read()
-	fmt.Println(r)
+    r := m.Read()
+    fmt.Println(r)
 }
 ```
 
