@@ -2,7 +2,7 @@
 
 A variety of GPIO utilities for your Raspberry Pi.
 
-**Documentation:** [![GoDoc](https://godoc.org/github.com/brumawen/gopi-tools?status.svg)](https://godoc.org/github.com/brumawen/gopi-tools)
+**Documentation:** [![GoDoc](https://godoc.org/github.com/brumawen/gopi-tools/src?status.svg)](https://godoc.org/github.com/brumawen/gopi-tools/src)
 
 gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.
 
