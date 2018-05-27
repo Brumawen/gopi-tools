@@ -61,22 +61,12 @@ This type provides control for a [LCD Display.](https://learn.adafruit.com/drive
 
 ```go
 func TestDisplayMessage(t *testing.T) {
-	d := CharDisplay{
-		GpioRS: 21,
-		GpioEN: 20,
-		GpioD4: 26,
-		GpioD5: 19,
-		GpioD6: 13,
-		GpioD7: 6,
-		Lines:  2,
-		Cols:   16,
-	}
-	err := d.Init()
+	d := CharDisplay{}
+	err := d.Message("Hello\nWorld")
 	if err != nil {
 		t.Error(err)
 	}
 	defer d.Close()
-	d.Message("Hello\nWorld")
 	time.Sleep(2 * time.Second)
 	d.Clear()
 }
@@ -88,8 +78,18 @@ This type provides control for a 1-Wire Temperature device like a DS18B20 temper
 
 ```go
 func TestCanReadTemp(t *testing.T) {
-	o := OneWireTemp{ID: "28-0516a4c75bff"}
-	err := o.Init()
+	st, err := GetDeviceList()
+	if err != nil {
+		t.Error(err)
+	}
+	if len(st) == 0 {
+		t.Error(errors.New("Temperature device not found."))
+	} else {
+		fmt.Println("Devices found", st)
+	}
+
+	o := OneWireTemp{ID: st[0].ID}
+	err = o.Init()
 	if err != nil {
 		t.Error(err)
 	}
@@ -120,7 +120,15 @@ func TestMcp3008CanReadChannels(t *testing.T) {
 	}
 	defer m.Close()
 
-	r := m.Read()
-	fmt.Println(r)
+	r, err := m.Read()
+	if err != nil {
+		t.Error(err)
+	}
+	if len(r) == 0 {
+		t.Error("No values returned")
+	} else {
+		fmt.Println(r)
+	}
 }
 ```
+
