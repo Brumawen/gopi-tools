@@ -6,7 +6,21 @@ A variety of GPIO utilities for your Raspberry Pi.
 
 gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.  
 
-Access to the Raspberry Pi's GPIO pins is provided by the awesome [go-rpio](https://github.com/stianeikeland/go-rpio) toolkit.
+## Dependencies
+
+Access to the Raspberry Pi's GPIO pins is by the following python 2.7 packages.
+
+###RPi.GPIO###
+Make sure you have the latest library by executing:
+````
+sudo pip install RPi.GPIO
+````
+
+###Adafruit_Python_CharLCD###
+Installation and setup instructions here, https://github.com/adafruit/Adafruit_Python_CharLCD
+
+###Adafruit_Python_MCP3008###
+Installation and setup instructions here, https://github.com/adafruit/Adafruit_Python_MCP3008
 
 ## Installation and Usage ##
 

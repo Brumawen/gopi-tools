@@ -1,6 +1,7 @@
 package gopitools
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -25,5 +26,7 @@ func TestMcp3008CanReadChannels(t *testing.T) {
 	}
 	if len(r) == 0 {
 		t.Error("No values returned")
+	} else {
+		fmt.Println(r)
 	}
 }

@@ -13,6 +13,8 @@ func TestCanReadTemp(t *testing.T) {
 	}
 	if len(st) == 0 {
 		t.Error(errors.New("Temperature device not found."))
+	} else {
+		fmt.Println("Devices found", st)
 	}
 
 	o := OneWireTemp{ID: st[0].ID}
