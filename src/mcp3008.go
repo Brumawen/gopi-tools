@@ -1,6 +1,7 @@
 package gopitools
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"strconv"
@@ -29,8 +30,12 @@ func (m *Mcp3008) Read() ([]float64, error) {
 	if err := m.Init(); err != nil {
 		return nil, err
 	}
-	out, err := exec.Command("python", "mcp3008.py").Output()
+	out, err := exec.Command("python", "mcp3008.py").CombinedOutput()
 	if err != nil {
+		msg := string(out)
+		if msg != "" {
+			return nil, errors.New(msg)
+		}
 		return nil, err
 	}
 	l := []float64{}

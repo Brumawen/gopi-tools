@@ -1,6 +1,7 @@
 package gopitools
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"strconv"
@@ -28,16 +29,24 @@ func (l *Pin) Init() error {
 
 // On turns the Pin on
 func (l *Pin) On() error {
-	if err := l.Init(); err != nil {
-		return err
-	}
-	return exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioNo), "-a", "on").Run()
+	return l.runAction("on")
 }
 
 // Off turns the Pin off
 func (l *Pin) Off() error {
+	return l.runAction("off")
+}
+
+func (l *Pin) runAction(a string) error {
 	if err := l.Init(); err != nil {
 		return err
 	}
-	return exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioNo), "-a", "off").Run()
+	out, err := exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioNo), "-a", a).CombinedOutput()
+	if err != nil {
+		msg := string(out)
+		if msg != "" {
+			return errors.New(msg)
+		}
+	}
+	return err
 }

@@ -7,7 +7,7 @@ parser.add_argument('-a', default='on', help='The action to perform. ("on", "off
 args = parser.parse_args()
 
 GPIO.setmode(GPIO.BCM)
-#GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 GPIO.setup(args.n,GPIO.OUT)
 if (args.a == 'on'):
     GPIO.output(args.n, GPIO.HIGH)    

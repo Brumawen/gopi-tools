@@ -1,6 +1,7 @@
 package gopitools
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"strconv"
@@ -30,24 +31,29 @@ func (l *Led) Init() error {
 
 // On turns the LED on
 func (l *Led) On() error {
-	if err := l.Init(); err != nil {
-		return err
-	}
-	return exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioLed), "-a", "on").Run()
+	return l.runAction("on")
 }
 
 // Off turns the LED off
 func (l *Led) Off() error {
-	if err := l.Init(); err != nil {
-		return err
-	}
-	return exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioLed), "-a", "off").Run()
+	return l.runAction("off")
 }
 
 // Toggle turns the LED on, if it's off, or off, if it's on.
 func (l *Led) Toggle() error {
+	return l.runAction("toggle")
+}
+
+func (l *Led) runAction(a string) error {
 	if err := l.Init(); err != nil {
 		return err
 	}
-	return exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioLed), "-a", "toggle").Run()
+	out, err := exec.Command("python", "gpiopin.py", "-n", strconv.Itoa(l.GpioLed), "-a", a).CombinedOutput()
+	if err != nil {
+		msg := string(out)
+		if msg != "" {
+			return errors.New(msg)
+		}
+	}
+	return err
 }

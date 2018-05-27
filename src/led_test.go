@@ -12,9 +12,15 @@ func TestLed(t *testing.T) {
 	}
 	defer l.Close()
 
-	l.On()
+	err := l.On()
+	if err != nil {
+		t.Error(err)
+	}
 	time.Sleep(2 * time.Second)
-	l.Off()
+	err = l.Off()
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestTurnLedOffOnClose(t *testing.T) {
