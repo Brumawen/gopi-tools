@@ -2,9 +2,9 @@
 
 A variety of GPIO utilities for your Raspberry Pi.
 
-**Documentation:** [![GoDoc](https://godoc.org/github.com/brumawen/gopi-tools?status.svg)](https://godoc.org/github.com/brumawen/gopi-tools)
+**Documentation:** [![GoDoc](https://godoc.org/github.com/brumawen/gopi-tools/src?status.svg)](https://godoc.org/github.com/brumawen/gopi-tools/src)
 
-gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.  
+gopi-tools is a Go Library providing a set of tools that control various hardware devices and sensors for a Raspberry Pi.
 
 ## Dependencies
 
@@ -25,11 +25,13 @@ Installation and setup instructions here, https://github.com/adafruit/Adafruit_P
 ## Installation and Usage ##
 
 To install run the following on the command prompt:
+
 ```Shell
-go get "github.com\brumawen\gopi-tools" 
+go get "github.com\brumawen\gopi-tools"
 ```
 
 Add the following import to the top of your code:
+
 ```go
 import "github.com/brumawen/gopi-tools"
 ```
@@ -38,26 +40,30 @@ import "github.com/brumawen/gopi-tools"
 
 ### Led ###
 
-This type provides control over a LED that has been [connected](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins) to the GPIO pins of your Pi.
+This type provides control over a LED that has been [connected](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins) to a GPIO pin of your Pi.
+
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/led.png?raw=true "LED schematic")
 
 ```go
 func TestLed(t *testing.T) {
-	l := Led{GpioLed: 18}
-	err := l.Init()
-	if err != nil {
-		t.Error(err)
-	}
-	defer l.Close()
+    l := Led{GpioLed: 18}
+    err := l.Init()
+    if err != nil {
+        t.Error(err)
+    }
+    defer l.Close()
 
-	l.On()
-	time.Sleep(2 * time.Second)
-	l.Off()
+    l.On()
+    time.Sleep(2 * time.Second)
+    l.Off()
 }
 ```
 
 ### CharDisplay ###
 
 This type provides control for a [LCD Display.](https://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/overview)
+
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/chardisplay.png?raw=true "CharDisplay schematic")
 
 ```go
 func TestDisplayMessage(t *testing.T) {
@@ -75,6 +81,8 @@ func TestDisplayMessage(t *testing.T) {
 ### OneWireTemp ###
 
 This type provides control for a 1-Wire Temperature device like a DS18B20 temperature probe.
+
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/onewire.png?raw=true "OneWire schematic")
 
 ```go
 func TestCanReadTemp(t *testing.T) {
@@ -109,6 +117,8 @@ func TestCanReadTemp(t *testing.T) {
 ### Mcp3008 ###
 
 This type provides control for a 8-Channel ADC IC.
+
+![alt text](https://github.com/Brumawen/gopi-tools/blob/master/docs/mcp3008.png?raw=true "MCP3008 schematic")
 
 A call to the Read method returns a float slice containing the 8 channel values read from the IC.
 

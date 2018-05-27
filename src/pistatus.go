@@ -12,14 +12,14 @@ import (
 // PiStatus holds current information about the Device
 type PiStatus struct {
 	HostName     string   // Current Host Name
-	IpAddress    []string // Current IP Address
+	IPAddress    []string // Current IP Address
 	OSName       string   // Operating System Name
 	OSVersion    string   // Operating System version
 	HWType       string   // Hardware type
 	HWSerialNo   string   // Hardware SerialNo
 	MachineID    string   // Machine ID
-	CpuTemp      float64  // CPU temperature in Celcius
-	GpuTemp      float64  // GPU temperature in Celcius
+	CPUTemp      float64  // CPU temperature in Celcius
+	GPUTemp      float64  // GPU temperature in Celcius
 	FreeDisk     int      // Free Disk Space in bytes
 	FreeDiskPerc int      // Free Disk Space in percentage
 	AvailMem     int      // Available Memory in bytes
@@ -40,7 +40,7 @@ func (s *PiStatus) Read() {
 	if ip, err := GetLocalIPAddresses(); err != nil {
 		log.Println("Could not get IP addresses.", err)
 	} else {
-		s.IpAddress = ip
+		s.IPAddress = ip
 	}
 
 	//get operating system info
@@ -89,7 +89,7 @@ func (s *PiStatus) Read() {
 		if v, err := strconv.ParseFloat(strings.TrimSpace(txt), 64); err != nil {
 			log.Println("Could not parse CPU Temperature.", txt)
 		} else {
-			s.CpuTemp = v / 1000
+			s.CPUTemp = v / 1000
 		}
 	}
 
@@ -102,7 +102,7 @@ func (s *PiStatus) Read() {
 		if v, err := strconv.ParseFloat(txt, 64); err != nil {
 			log.Println("Could not parse GPU temperature.", txt)
 		} else {
-			s.GpuTemp = v
+			s.GPUTemp = v
 		}
 	}
 
