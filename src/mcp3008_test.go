@@ -20,7 +20,7 @@ func TestMcp3008CanReadChannels(t *testing.T) {
 	}
 	defer m.Close()
 
-	r, err := m.Read()
+	r, err := m.Read(0, 1, 2)
 	if err != nil {
 		t.Error(err)
 	}

@@ -26,11 +26,17 @@ func (m *Mcp3008) Init() error {
 
 // Read reads the current values from the ADC and returns them as a float slice
 // containing 8 values.  Each value ranges from 0 to 1.
-func (m *Mcp3008) Read() ([]float64, error) {
+func (m *Mcp3008) Read(c ...int) ([]float64, error) {
 	if err := m.Init(); err != nil {
 		return nil, err
 	}
-	out, err := exec.Command("python", "mcp3008.py").CombinedOutput()
+
+	v := []string{}
+	v = append(v, "mcp3008.py")
+	for _, i := range c {
+		v = append(v, strconv.Itoa(i))
+	}
+	out, err := exec.Command("python", v...).CombinedOutput()
 	if err != nil {
 		msg := string(out)
 		if msg != "" {
@@ -41,6 +47,7 @@ func (m *Mcp3008) Read() ([]float64, error) {
 	l := []float64{}
 	if len(out) > 0 {
 		for _, v := range strings.Split(string(out), "\t") {
+			v = strings.TrimSpace(v)
 			if f, err := strconv.ParseFloat(v, 64); err != nil {
 				l = append(l, 0)
 			} else {
