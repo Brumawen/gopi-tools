@@ -36,6 +36,16 @@ func (t *OneWireTemp) Close() {
 	}
 }
 
+// Contains returns whether the list of devices contains the specified ID
+func Contains(l []OneWireDevice, id string) bool {
+	for _, a := range l {
+		if a.ID == id {
+			return true
+		}
+	}
+	return false
+}
+
 // GetDeviceList returns a list of attached devices.
 // The first characters before the dash are the family code.
 // The characters after the dash are the unique serial number.
