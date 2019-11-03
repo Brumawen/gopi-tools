@@ -20,6 +20,7 @@ type PiStatus struct {
 	MachineID    string   // Machine ID
 	CPUTemp      float64  // CPU temperature in Celcius
 	GPUTemp      float64  // GPU temperature in Celcius
+	IsThrottled  bool     // Is currently throttled
 	FreeDisk     int      // Free Disk Space in bytes
 	FreeDiskPerc int      // Free Disk Space in percentage
 	AvailMem     int      // Available Memory in bytes
@@ -106,6 +107,19 @@ func (s *PiStatus) Read() {
 		}
 	}
 
+	//get throttled status
+	if out, err := exec.Command("/opt/vc/bin/vcgencmd", "get_throttled").Output(); err != nil {
+		log.Println("Could not get throttling state.", err)
+	} else {
+		txt := string(out)
+		txt = txt[11 : len(txt)-1]
+		if v, err := strconv.ParseUint(txt, 16, 64); err != nil {
+			log.Println("Could not parse throttling state.", txt)
+		} else {
+			s.IsThrottled = (v&2 == 2)
+		}
+	}
+
 	//get disk space
 	re = regexp.MustCompile("/dev/root\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)\\s*(\\d*)%")
 	if out, err := exec.Command("df").Output(); err != nil {
@@ -157,6 +171,8 @@ func (s *PiStatus) Read() {
 	}
 }
 
+// getHardwareType converts the code to a readable text string
+// See https://www.raspberrypi.org/documentation/hardware/raspberrypi/revision-codes/README.md
 func getHardwareType(code string) string {
 	switch code {
 	case "0002", "0003":
@@ -165,18 +181,24 @@ func getHardwareType(code string) string {
 		return "Raspberry Pi B rev 2.0"
 	case "0007", "0008", "0009":
 		return "Raspberry Pi A"
-	case "0010":
+	case "0010", "0013":
 		return "Raspberry Pi B+"
 	case "0011":
 		return "Raspberry Pi Compute Module"
-	case "0012":
+	case "0012", "0015":
 		return "Raspberry Pi A+"
-	case "a01041", "a21041":
+	case "a01040", "a01041", "a21041":
 		return "Raspberry Pi 2B"
 	case "900092", "900093":
 		return "Raspberry Pi Zero"
-	case "a02082", "a22082":
+	case "a02082", "a22082", "a32082", "a52082", "a22083":
 		return "Raspberry Pi 3B"
+	case "a03111":
+		return "Raspberry Pi 4 1Gb"
+	case "b03111":
+		return "Raspberry Pi 4 2Gb"
+	case "c03111":
+		return "Raspberry Pi 4 4Gb"
 	case "9000c1":
 		return "Raspberry Pi Zero W"
 	default:
