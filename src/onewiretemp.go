@@ -37,9 +37,9 @@ func (t *OneWireTemp) Close() {
 }
 
 // Contains returns whether the list of devices contains the specified ID
-func Contains(l []OneWireDevice, id string) bool {
+func (t *OneWireTemp) IsInDevices(l []OneWireDevice) bool {
 	for _, a := range l {
-		if a.ID == id {
+		if a.ID == t.ID {
 			return true
 		}
 	}
