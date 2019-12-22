@@ -36,7 +36,7 @@ func (t *OneWireTemp) Close() {
 	}
 }
 
-// Contains returns whether the list of devices contains the specified ID
+// IsInDevices returns whether the list of devices contains the specified ID
 func (t *OneWireTemp) IsInDevices(l []OneWireDevice) bool {
 	for _, a := range l {
 		if a.ID == t.ID {
@@ -93,6 +93,10 @@ func (t *OneWireTemp) ReadTemp() (float64, error) {
 	m := t.re.FindStringSubmatch(string(data))
 	if len(m) >= 2 {
 		v, err := strconv.ParseFloat(m[1], 64)
+		if v == 85000 {
+			// Error reading
+			return 999999, err
+		}
 		return v / 1000, err
 	}
 	return 999999, nil
